@@ -1,0 +1,54 @@
+{
+  "taskGroups": [
+    {
+      "taskSpec": {
+        "runnables": [
+          	{
+		"container": {
+                    "imageUri": "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1",
+                    "entrypoint": "/bin/sh",
+                    "commands": [
+                        "-c",
+			"gsutil cp gs://thomashk-test2/parabricks/parabricks-run.sh /mnt/data/parabricks-run.sh | ./mnt/data/parabricks-run.sh"
+                            ]
+                             }
+                }
+        ],
+        "volumes": [
+          {
+            "deviceName": "new-pd",
+              "mount_path": "/mnt/data",
+              "mountOptions": "rw,async"
+          }
+        ],
+        "maxRetryCount": 8,
+        "maxRunDuration": "86400s"
+      },
+      "taskCount": 1
+    }
+  ],
+  "allocationPolicy": {
+    "instances": [
+      {
+	"instanceTemplate": "https://www.googleapis.com/compute/v1/projects/service-hpc-project2/global/instanceTemplates/nvidia-parabrick-template-2025"
+        }
+    ],
+    "network": {
+        "networkInterfaces": [
+            {
+                "network": "projects/host-hpc-project1/global/networks/shared-net",
+                "subnetwork": "projects/host-hpc-project1/regions/us-central1/subnetworks/tier-1",
+                "noExternalIpAddress": true 
+            }
+        ]
+    }
+    
+  },
+  "labels": {
+    "env": "experimental",
+    "mayo-user": "thomashk"
+  },
+  "logsPolicy": {
+    "destination": "CLOUD_LOGGING"
+  }
+}
