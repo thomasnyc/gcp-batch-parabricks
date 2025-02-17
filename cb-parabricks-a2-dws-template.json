@@ -1,0 +1,38 @@
+{
+  "taskGroups": [
+    {
+      "taskSpec": {
+        "runnables": [
+          	{
+		"container": {
+                    "imageUri": "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1",
+                    "entrypoint": "/bin/sh",
+                    "commands": [
+                        "-c",
+			"gsutil cp gs://thomashk-test2/parabricks/parabricks-run.sh /mnt/data/parabricks-run.sh | ./mnt/data/parabricks-run.sh"
+                            ]
+                             }
+                }
+        ],
+        "maxRetryCount": 8,
+        "maxRunDuration": "86400s"
+      },
+      "taskCount": 1
+    }
+  ],
+  "allocationPolicy": {
+    "instances": [
+      {
+	"instanceTemplate": "https://www.googleapis.com/compute/v1/projects/thomashk-mig/global/instanceTemplates/nvidia-parabrick-template-2025-2"
+        }
+
+    ]},
+  "labels": {
+    "goog-batch-dynamic-workload-scheduler": "true",
+    "env": "experimental",
+    "user": "thomashk"
+  },
+  "logsPolicy": {
+    "destination": "CLOUD_LOGGING"
+  }
+}
